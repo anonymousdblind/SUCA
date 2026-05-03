@@ -21,6 +21,7 @@ from accelerate import Accelerator
 from accelerate.logging import get_logger
 from accelerate.utils import set_seed
 from diffusers import FlowMatchEulerDiscreteScheduler, StableDiffusion3Pipeline
+from torch.distributed.elastic.multiprocessing.errors import record
 from torch.utils.data import DataLoader
 from tqdm.auto import tqdm
 
@@ -53,6 +54,7 @@ def parse_args():
     parser.add_argument("--gradient_checkpointing", action="store_true", default=True)
     parser.add_argument("--max_grad_norm", type=float, default=1.0)
     parser.add_argument("--dataloader_num_workers", type=int, default=4)
+    parser.add_argument("--report_to", type=str, default="none", choices=["none", "wandb"])
     parser.add_argument("--resume_from_checkpoint", type=str, default=None,
                         help="Path to checkpoint dir to resume from (e.g. outputs/warmup/checkpoint-3000)")
     return parser.parse_args()
@@ -76,18 +78,25 @@ def encode_prompts(pipeline, prompts, device, weight_dtype):
     return prompt_embeds.to(dtype=weight_dtype), pooled_prompt_embeds.to(dtype=weight_dtype)
 
 
+@record
 def main():
     args = parse_args()
+
+    for path in [args.model_name, args.metadata_file, args.data_root]:
+        if not os.path.exists(path):
+            raise FileNotFoundError(f"Required warmup path not found: {path}")
 
     repo_root = Path(__file__).resolve().parent
     if args.analysis_dir is None:
         args.analysis_dir = str((repo_root / "analysis").resolve())
     os.makedirs(args.analysis_dir, exist_ok=True)
 
+    log_with = None if args.report_to == "none" else args.report_to
+
     accelerator = Accelerator(
         gradient_accumulation_steps=args.gradient_accumulation_steps,
         mixed_precision=args.mixed_precision,
-        log_with="wandb",
+        log_with=log_with,
         project_dir=os.path.join(args.analysis_dir, "warmup_logs"),
     )
 
@@ -98,7 +107,7 @@ def main():
     )
     logger.info(accelerator.state, main_process_only=False)
 
-    if accelerator.is_main_process:
+    if accelerator.is_main_process and args.report_to != "none":
         accelerator.init_trackers(
             project_name="suca-warmup-sft",
             config=vars(args),

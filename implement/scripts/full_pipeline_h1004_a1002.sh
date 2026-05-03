@@ -163,7 +163,6 @@ activate_env() {
 run_warmup() {
   log "Running 4xH100 warmup"
   activate_env
-  export WANDB_API_KEY
   local num_processes
   num_processes=$(count_csv_items "$H100_WARMUP_GPUS")
   CUDA_VISIBLE_DEVICES="$H100_WARMUP_GPUS" \
@@ -182,6 +181,7 @@ run_warmup() {
     --learning_rate 1e-5 \
     --max_train_steps 7500 \
     --gradient_checkpointing \
+    --report_to none \
     --mixed_precision bf16 \
     2>&1 | tee "$WARMUP_LOG"
 
