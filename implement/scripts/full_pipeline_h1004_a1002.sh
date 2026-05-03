@@ -130,7 +130,7 @@ prepare_layout() {
   require_path "$MODEL_ROOT/stable-diffusion-3.5-medium"
   require_path "$MODEL_ROOT/Qwen3-VL-8B-Instruct"
   require_path "$DATA_ROOT/geneval2"
-  require_path "$DATA_ROOT/spatialgeneval"
+  require_path "$DATA_ROOT/SpatialGenEval"
   require_path "$DATA_ROOT/dpg-bench"
   require_path "$FINE_T2I_ROOT"
 
@@ -299,7 +299,7 @@ run_spatial_eval() {
   "$PYTHON_BIN" scripts/eval_spatial_api.py \
     --api_key "$dashscope_key" \
     --image_dir "$output_dir/SpatialGenEval/images" \
-    --input_json "$DATA_ROOT/spatialgeneval/eval/SpatialGenEval_T2I_Prompts.jsonl" \
+    --input_json "$DATA_ROOT/SpatialGenEval/eval/SpatialGenEval_T2I_Prompts.jsonl" \
     --output_json "$output_dir/SpatialGenEval/results.json" \
     --summary_json "$output_dir/SpatialGenEval/summary.json" \
     --variant_name "$variant" \

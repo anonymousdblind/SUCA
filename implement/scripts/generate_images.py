@@ -19,7 +19,7 @@ def load_geneval2_prompts(data_dir):
 
 
 def load_spatialgeneval_prompts(data_dir):
-    path = os.path.join(data_dir, "spatialgeneval", "eval", "SpatialGenEval_T2I_Prompts.jsonl")
+    path = os.path.join(data_dir, "SpatialGenEval", "eval", "SpatialGenEval_T2I_Prompts.jsonl")
     prompts = []
     with open(path) as f:
         for line in f:
