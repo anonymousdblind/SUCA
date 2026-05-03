@@ -24,6 +24,7 @@ BASE_RESULT_DIR=${RESULT_ROOT}/base
 WARMUP_RESULT_DIR=${RESULT_ROOT}/warmup
 RL_RESULT_DIR=${RESULT_ROOT}/rl
 COMPARISON_MD=${PROJECT_HOME}/baseline_comparison_auto.md
+WARMUP_LOG=${TRAIN_LOG_DIR}/warmup.log
 
 H100_WARMUP_GPUS=${H100_WARMUP_GPUS:-0,1,2,3}
 H100_TRAIN_GPUS=${H100_TRAIN_GPUS:-0,1,2,3}
@@ -162,6 +163,7 @@ activate_env() {
 run_warmup() {
   log "Running 4xH100 warmup"
   activate_env
+  export WANDB_API_KEY
   local num_processes
   num_processes=$(count_csv_items "$H100_WARMUP_GPUS")
   CUDA_VISIBLE_DEVICES="$H100_WARMUP_GPUS" \
@@ -180,7 +182,8 @@ run_warmup() {
     --learning_rate 1e-5 \
     --max_train_steps 7500 \
     --gradient_checkpointing \
-    --mixed_precision bf16
+    --mixed_precision bf16 \
+    2>&1 | tee "$WARMUP_LOG"
 
   require_path "$WARMUP_OUTPUT_DIR/checkpoint-7000/transformer"
 }
@@ -257,7 +260,7 @@ generate_variant() {
       --output_dir "$output_dir" \
       --resolution 512 \
       --batch_size 4 \
-      --benchmarks geneval2,spatialgeneval,dpgbench
+      --benchmarks geneval2,SpatialGenEval,dpgbench
   else
     CUDA_VISIBLE_DEVICES="$EVAL_GEN_GPU" \
     "$PYTHON_BIN" scripts/generate_images.py \
@@ -266,7 +269,7 @@ generate_variant() {
       --output_dir "$output_dir" \
       --resolution 512 \
       --batch_size 4 \
-      --benchmarks geneval2,spatialgeneval,dpgbench
+      --benchmarks geneval2,SpatialGenEval,dpgbench
   fi
 }
 
@@ -295,10 +298,10 @@ run_spatial_eval() {
   log "Running SpatialGenEval for ${variant}"
   "$PYTHON_BIN" scripts/eval_spatial_api.py \
     --api_key "$dashscope_key" \
-    --image_dir "$output_dir/spatialgeneval/images" \
+    --image_dir "$output_dir/SpatialGenEval/images" \
     --input_json "$DATA_ROOT/spatialgeneval/eval/SpatialGenEval_T2I_Prompts.jsonl" \
-    --output_json "$output_dir/spatialgeneval/results.json" \
-    --summary_json "$output_dir/spatialgeneval/summary.json" \
+    --output_json "$output_dir/SpatialGenEval/results.json" \
+    --summary_json "$output_dir/SpatialGenEval/summary.json" \
     --variant_name "$variant" \
     --num_samples 50
 }

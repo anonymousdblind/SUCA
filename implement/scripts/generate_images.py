@@ -79,15 +79,16 @@ def main():
 
     generator = torch.Generator(device=device).manual_seed(args.seed)
 
-    benchmarks = args.benchmarks.split(",")
+    benchmarks = [bench.strip() for bench in args.benchmarks.split(",") if bench.strip()]
 
     for bench in benchmarks:
+        bench_key = bench.lower()
         print(f"\n=== Generating for {bench} ===")
-        if bench == "geneval2":
+        if bench_key == "geneval2":
             all_prompts = load_geneval2_prompts(args.data_dir)
-        elif bench == "spatialgeneval":
+        elif bench_key == "spatialgeneval":
             all_prompts = load_spatialgeneval_prompts(args.data_dir)
-        elif bench == "dpgbench":
+        elif bench_key == "dpgbench":
             all_prompts = load_dpgbench_prompts(args.data_dir)
         else:
             print(f"Unknown benchmark: {bench}")
@@ -102,13 +103,13 @@ def main():
         # Check which images already exist and skip them
         remaining = []
         for idx, item in enumerate(all_prompts):
-            if bench == "geneval2":
+            if bench_key == "geneval2":
                 fname = f"{idx:06d}.png"
             else:
                 fname = f"{item['id']}.png"
             save_path = os.path.join(out_dir, fname)
             if os.path.exists(save_path):
-                if bench == "geneval2":
+                if bench_key == "geneval2":
                     geneval2_mapping[item["prompt"]] = save_path
             else:
                 remaining.append((idx, item))
@@ -133,22 +134,22 @@ def main():
             ).images
 
             for j, (img, (idx, item)) in enumerate(zip(images, batch_items)):
-                if bench == "geneval2":
+                if bench_key == "geneval2":
                     fname = f"{idx:06d}.png"
                     save_path = os.path.join(out_dir, fname)
                     img.save(save_path)
                     geneval2_mapping[item["prompt"]] = save_path
-                elif bench == "spatialgeneval":
+                elif bench_key == "spatialgeneval":
                     fname = f"{item['id']}.png"
                     save_path = os.path.join(out_dir, fname)
                     img.save(save_path)
-                elif bench == "dpgbench":
+                elif bench_key == "dpgbench":
                     fname = f"{item['id']}.png"
                     save_path = os.path.join(out_dir, fname)
                     img.save(save_path)
 
         # Save geneval2 mapping
-        if bench == "geneval2":
+        if bench_key == "geneval2":
             mapping_path = os.path.join(args.output_dir, bench, "image_paths.json")
             with open(mapping_path, "w") as f:
                 json.dump(geneval2_mapping, f, indent=2)

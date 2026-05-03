@@ -59,9 +59,12 @@ def delta_text(value: Optional[float], ref: Optional[float]) -> str:
 
 
 def variant_metrics(variant_dir: Path):
+    spatial_summary = variant_dir / "SpatialGenEval" / "summary.json"
+    if not spatial_summary.exists():
+        spatial_summary = variant_dir / "spatialgeneval" / "summary.json"
     return {
         "geneval2": compute_geneval_score(variant_dir / "geneval2" / "scores.json"),
-        "spatialgeneval": load_spatial_score(variant_dir / "spatialgeneval" / "summary.json"),
+        "spatialgeneval": load_spatial_score(spatial_summary),
         "dpgbench": load_dpg_score(variant_dir / "dpgbench" / "summary.json"),
     }
 

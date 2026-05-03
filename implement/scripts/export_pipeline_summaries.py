@@ -96,7 +96,9 @@ def main() -> None:
             payload = build_geneval_summary(score_path, benchmark_path, variant_key)
             write_json(geneval_targets[variant_key], payload)
 
-        spatial_summary = variant_dir / "spatialgeneval" / "summary.json"
+        spatial_summary = variant_dir / "SpatialGenEval" / "summary.json"
+        if not spatial_summary.exists():
+            spatial_summary = variant_dir / "spatialgeneval" / "summary.json"
         if spatial_summary.exists():
             copy_if_exists(spatial_summary, spatial_targets[variant_key])
 
