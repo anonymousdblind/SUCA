@@ -7,6 +7,15 @@ ROOT=${PROJECT_HOME}/implement
 DATA_ROOT=${PROJECT_HOME}/data
 MODEL_ROOT=${PROJECT_HOME}/models
 FINE_T2I_ROOT=${DATA_ROOT}/fine-t2i
+VENV_ROOT=${PROJECT_HOME}/.venv
+
+[[ "${PWD}" == "${PROJECT_HOME}" ]] || {
+  echo "ERROR: Run this script from ${PROJECT_HOME}" >&2
+  echo "Example: cd ${PROJECT_HOME} && bash implement/scripts/full_pipeline_h1004_a1002.sh" >&2
+  exit 1
+}
+
+cd "${PROJECT_HOME}"
 
 WARMUP_OUTPUT_DIR=${ROOT}/outputs/warmup
 TRAIN_LOG_DIR=${ROOT}/outputs/full_pipeline_logs
@@ -41,7 +50,7 @@ PIPELINE_MANIFEST=${ROOT}/docs/paper_artifact_manifest.canonical.json
 DPG_SCORE_COMMAND_TEMPLATE=${DPG_SCORE_COMMAND_TEMPLATE:-}
 DPG_VARIANT_NAME_PREFIX=${DPG_VARIANT_NAME_PREFIX:-}
 
-PYTHON_BIN=${ROOT}/.venv/bin/python
+PYTHON_BIN=${VENV_ROOT}/bin/python
 TRAIN_LOG=${TRAIN_LOG_DIR}/rl_train.log
 TUNNEL_PID=
 
@@ -116,7 +125,7 @@ resolve_dashscope_key() {
 
 prepare_layout() {
   log "Preparing fixed project layout"
-  require_path "$ROOT/.venv/bin/activate"
+  require_path "$VENV_ROOT/bin/activate"
   require_path "$MODEL_ROOT/stable-diffusion-3.5-medium"
   require_path "$MODEL_ROOT/Qwen3-VL-8B-Instruct"
   require_path "$DATA_ROOT/geneval2"
@@ -143,11 +152,11 @@ prepare_layout() {
 activate_env() {
   cd "$ROOT"
   # shellcheck disable=SC1091
-  source .venv/bin/activate
+  source "$VENV_ROOT/bin/activate"
   export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
   export NCCL_TIMEOUT=1800
   export PYTHONPATH="$ROOT:$ROOT/flow_grpo:${PYTHONPATH:-}"
-  export LD_LIBRARY_PATH="$ROOT/.venv/lib/python3.10/site-packages/nvidia/cusparselt/lib:${LD_LIBRARY_PATH:-}"
+  export LD_LIBRARY_PATH="$VENV_ROOT/lib/python3.10/site-packages/nvidia/cusparselt/lib:${LD_LIBRARY_PATH:-}"
 }
 
 run_warmup() {
