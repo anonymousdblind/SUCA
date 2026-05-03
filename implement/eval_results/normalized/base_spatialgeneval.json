@@ -1,0 +1,21 @@
+{
+  "benchmark": "spatialgeneval",
+  "variant": "base",
+  "overall": {
+    "avg_acc": 64.08,
+    "basic_acc": 70.41,
+    "spatial_acc": 62.5
+  },
+  "dimensions": {
+    "Object": 65.3,
+    "Attribute": 75.5,
+    "Position": 57.1,
+    "Orientation": 59.2,
+    "Layout": 65.3,
+    "Comparison": 63.3,
+    "Proximity": 67.3,
+    "Occlusion": 38.8,
+    "Motion": 69.4,
+    "Causal": 79.6
+  }
+}

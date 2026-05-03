@@ -1,0 +1,5 @@
+Method,Left/Right,Above/Below,Inside/Around,Front/Behind,Overall
+SD3.5-Medium,--,--,--,--,64.08
+SFT warmup,--,--,--,--,66.40
+Flow-GRPO w/o \method,--,--,--,--,--
+\method,--,--,--,--,--

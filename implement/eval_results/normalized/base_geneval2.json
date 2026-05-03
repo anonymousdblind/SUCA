@@ -1,0 +1,25 @@
+{
+  "benchmark": "geneval2",
+  "variant": "base",
+  "overall": {
+    "soft_tifa_gm": 16.91,
+    "soft_tifa_am": 64.27
+  },
+  "skills": {
+    "Object": 87.39,
+    "Attribute": 67.85,
+    "Count": 42.97,
+    "Position": 43.58,
+    "Verb": 21.36
+  },
+  "atom_count": {
+    "3": 40.77,
+    "4": 33.37,
+    "5": 20.81,
+    "6": 14.89,
+    "7": 10.05,
+    "8": 7.35,
+    "9": 5.13,
+    "10": 2.94
+  }
+}

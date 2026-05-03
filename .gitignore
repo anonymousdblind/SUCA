@@ -1,0 +1,17 @@
+# Ignore AppleDouble metadata files everywhere.
+._*
+
+# Ignore everything by default, then allow the implement subtree.
+*
+!.gitignore
+!.ignore
+!implement/
+!implement/**
+
+# Even inside implement, keep AppleDouble files ignored.
+implement/**/._*
+
+# Re-ignore generated files inside the allowed implement subtree.
+implement/**/__pycache__/
+implement/**/*.py[cod]
+implement/analysis/tmp_test/

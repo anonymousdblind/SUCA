@@ -1,0 +1,11 @@
+{
+  "best_rl_run": {
+    "label": "SUCA + sparse process reward",
+    "step": 12,
+    "imagereward": 1.089,
+    "attribute_skill": 1.191,
+    "attribute_reward_change_pct": 27.0,
+    "advantage_raw_std": 1.85,
+    "advantage_separability_x": 15.0
+  }
+}

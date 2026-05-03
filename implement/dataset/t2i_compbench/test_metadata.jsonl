@@ -1,0 +1,200 @@
+{"prompt": "a man in front of a balloon", "category": "3d_spatial"}
+{"prompt": "a frog on the top of a cup", "category": "spatial"}
+{"prompt": "a brown chair and a red elephant", "category": "color"}
+{"prompt": "The triangular roof and the diamond windows were the defining features of the modern architecture.", "category": "shape"}
+{"prompt": "A dog is panting and resting after a long walk.", "category": "non_spatial"}
+{"prompt": "a frog on the right of a bag", "category": "spatial"}
+{"prompt": "The smooth purple vase sat next to the tall white candlestick.", "category": "complex"}
+{"prompt": "a plastic container and a fabric blanket", "category": "texture"}
+{"prompt": "a phone on the right of a chicken", "category": "spatial"}
+{"prompt": "an oval rug and a square coffee table", "category": "shape"}
+{"prompt": "a spherical baseball and a conical baseball cap", "category": "shape"}
+{"prompt": "a blue suitcase and a red vase", "category": "color"}
+{"prompt": "a spherical tennis ball and a conical tennis shoe", "category": "shape"}
+{"prompt": "a brown bird and a blue bear", "category": "color"}
+{"prompt": "a rabbit on the bottom of a chair", "category": "spatial"}
+{"prompt": "a tall basketball player and a small hat", "category": "shape"}
+{"prompt": "a frog hidden by a chair", "category": "3d_spatial"}
+{"prompt": "a painting on the top of a rabbit", "category": "spatial"}
+{"prompt": "a bicycle on the left of a man", "category": "spatial"}
+{"prompt": "a person on side of a lamp", "category": "spatial"}
+{"prompt": "a frog on the left of a table", "category": "spatial"}
+{"prompt": "a brown banana and a green cow", "category": "color"}
+{"prompt": "a vase behind a television", "category": "3d_spatial"}
+{"prompt": "a round pizza and a square pizza box", "category": "shape"}
+{"prompt": "The black camera was next to the white tripod.", "category": "complex"}
+{"prompt": "three microwaves", "category": "numeracy"}
+{"prompt": "The fuzzy sphere was nestled between the spiky cube and the smooth cylinder.", "category": "complex"}
+{"prompt": "a mouse hidden by a key", "category": "3d_spatial"}
+{"prompt": "a rubber ball and a leather belt", "category": "texture"}
+{"prompt": "The soft, fluffy clouds drifted lazily across the blue sky, a canvas of endless possibilities and imagination.", "category": "complex"}
+{"prompt": "a wooden door and a fabric dress", "category": "texture"}
+{"prompt": "A row of cubic boxes and a pile of pyramidal stones were stacked neatly in the corner of the room.", "category": "shape"}
+{"prompt": "a desk hidden by a person", "category": "3d_spatial"}
+{"prompt": "a mouse hidden by a dog", "category": "3d_spatial"}
+{"prompt": "A small kitten and a big dog sat side by side.", "category": "shape"}
+{"prompt": "The wooden pencil and metallic sharpener write the fluffy notes on the plastic notepad.", "category": "texture"}
+{"prompt": "rubber sole shoes and a plastic container", "category": "texture"}
+{"prompt": "a brown giraffe and a red train", "category": "color"}
+{"prompt": "two candles, one fish and one bicycle", "category": "numeracy"}
+{"prompt": "a dog on the bottom of a train", "category": "spatial"}
+{"prompt": "A child is jumping on a trampoline in their backyard.", "category": "non_spatial"}
+{"prompt": "A woman is holding a guitar and strumming a tune.", "category": "non_spatial"}
+{"prompt": "The intricate, delicate web of the spider shimmered in the early morning dew, a natural masterpiece of geometry and design.", "category": "complex"}
+{"prompt": "a bird on the left of a woman", "category": "spatial"}
+{"prompt": "a frog hidden by a lamp", "category": "3d_spatial"}
+{"prompt": "The sleek black cat sat next to the fluffy white pillow.", "category": "complex"}
+{"prompt": "two camels, three balloons, two boys and three strawberries", "category": "numeracy"}
+{"prompt": "a cow next to a couch", "category": "spatial"}
+{"prompt": "seven desks", "category": "numeracy"}
+{"prompt": "a rubber band and a wooden toy", "category": "texture"}
+{"prompt": "four sinks and two tents", "category": "numeracy"}
+{"prompt": "A couple is taking a romantic bike ride through the countryside.", "category": "non_spatial"}
+{"prompt": "a red horse and a brown orange", "category": "color"}
+{"prompt": "A child is playing with a jump rope and chanting rhymes.", "category": "non_spatial"}
+{"prompt": "A person is holding a camera and taking photos of the city.", "category": "non_spatial"}
+{"prompt": "a brown sheep and a blue vase", "category": "color"}
+{"prompt": "The sleek black laptop sat on the clean white desk.", "category": "complex"}
+{"prompt": "a rabbit behind a bag", "category": "3d_spatial"}
+{"prompt": "a brown acorn and a green leaf", "category": "color"}
+{"prompt": "A child is playing with a toy boat at the beach.", "category": "non_spatial"}
+{"prompt": "a cubic block and a triangular building set", "category": "shape"}
+{"prompt": "a candle behind a vase", "category": "3d_spatial"}
+{"prompt": "a wooden door and a glass jar", "category": "texture"}
+{"prompt": "a plastic cutlery and a glass mirror", "category": "texture"}
+{"prompt": "a candle on the left of a mouse", "category": "spatial"}
+{"prompt": "a round pizza and a rectangular piece of lasagna", "category": "shape"}
+{"prompt": "A person is kissing someone they love.", "category": "non_spatial"}
+{"prompt": "a pentagonal road sign and a pyramidal bookshelf", "category": "shape"}
+{"prompt": "The leather couch and fluffy pillow provide comfort on the wooden floor by the glass window.", "category": "texture"}
+{"prompt": "A child is playing with a toy kitchen and making imaginary meals.", "category": "non_spatial"}
+{"prompt": "The wooden salad bowl and plastic tongs mix the metallic greens for the fluffy salad.", "category": "texture"}
+{"prompt": "a rabbit next to a table", "category": "spatial"}
+{"prompt": "A group of friends are watching a movie together.", "category": "non_spatial"}
+{"prompt": "The rough brown boots contrasted with the soft white snow.", "category": "complex"}
+{"prompt": "The soft blue sky contrasted with the sharp white clouds.", "category": "complex"}
+{"prompt": "a rectangular television and a teardrop remote control", "category": "shape"}
+{"prompt": "a yellow apple and a red pear", "category": "color"}
+{"prompt": "a big hippopotamus and a small mouse", "category": "shape"}
+{"prompt": "a candle on the right of a bird", "category": "spatial"}
+{"prompt": "a bowl in front of a cow", "category": "3d_spatial"}
+{"prompt": "A dining area features a wood table and chairs, a brown refrigerator and light silver cabinets.", "category": "color"}
+{"prompt": "A person is holding a glass of wine and enjoying a sunset.", "category": "non_spatial"}
+{"prompt": "four couches, three candles, two fish, one frog and three plates", "category": "numeracy"}
+{"prompt": "The round clock was on the left of the rectangular picture frame.", "category": "complex"}
+{"prompt": "rubber sole shoes and a glass cup", "category": "texture"}
+{"prompt": "The delicate, intricate lacework of the wedding dress showcased the bride's beauty and elegance.", "category": "complex"}
+{"prompt": "A child is playing with a toy construction set and building a tower.", "category": "non_spatial"}
+{"prompt": "The crescent curve and the diamond pattern were the highlights of the carpet design.", "category": "shape"}
+{"prompt": "four sinks, three backpacks, two cups and two pears", "category": "numeracy"}
+{"prompt": "a rubber band and a wooden floor", "category": "texture"}
+{"prompt": "A group of friends are playing frisbee in the park.", "category": "non_spatial"}
+{"prompt": "a computer in front of a cow", "category": "3d_spatial"}
+{"prompt": "a candle in front of a bag", "category": "3d_spatial"}
+{"prompt": "a woman on the left of a cup", "category": "spatial"}
+{"prompt": "The glossy apple sat next to the fuzzy peach and the prickly pear.", "category": "complex"}
+{"prompt": "a green apple and a brown horse", "category": "color"}
+{"prompt": "A child is playing with a toy airplane and making it fly.", "category": "non_spatial"}
+{"prompt": "a television on the right of a woman", "category": "spatial"}
+{"prompt": "a cat in front of a chair", "category": "3d_spatial"}
+{"prompt": "The juicy red tomato lay next to the ripe orange pepper.", "category": "complex"}
+{"prompt": "three ducks, two clocks, two desks, three cows and four kites", "category": "numeracy"}
+{"prompt": "a pentagonal parking sign and a pyramidal trophy", "category": "shape"}
+{"prompt": "five tables", "category": "numeracy"}
+{"prompt": "A woman is sipping coffee while looking out a window.", "category": "non_spatial"}
+{"prompt": "A woman is holding a slice of pizza and taking a bite.", "category": "non_spatial"}
+{"prompt": "a gray cat and a black mouse", "category": "color"}
+{"prompt": "a yellow tomato and a red pepper", "category": "color"}
+{"prompt": "an oblong eggplant and a teardrop fig.", "category": "shape"}
+{"prompt": "The smooth, cool marble floors of the museum echoed with the footsteps of the visitors, as they admired the priceless works of art.", "category": "complex"}
+{"prompt": "The leather wallet and fluffy keychain hang on the metallic hook by the wooden door.", "category": "texture"}
+{"prompt": "one paddle and three goldfish", "category": "numeracy"}
+{"prompt": "A dog is sitting next to its owner and listening to commands.", "category": "non_spatial"}
+{"prompt": "The fluffy white cat slept on the warm fuzzy blanket.", "category": "complex"}
+{"prompt": "a chair hidden by a turtle", "category": "3d_spatial"}
+{"prompt": "A person is shaking their head in disagreement.", "category": "non_spatial"}
+{"prompt": "a table hidden by a dog", "category": "3d_spatial"}
+{"prompt": "A man is holding a set of keys and unlocking his car.", "category": "non_spatial"}
+{"prompt": "The sweet red strawberry lay next to the tart green apple.", "category": "complex"}
+{"prompt": "a blue backpack and a gold clock", "category": "color"}
+{"prompt": "The cozy blanket covered the cold body and the hard floor.", "category": "complex"}
+{"prompt": "a rabbit on the right of a wallet", "category": "spatial"}
+{"prompt": "four printers and four chickens", "category": "numeracy"}
+{"prompt": "A long rectangular table and a small circular vase were placed in the center of the room.", "category": "shape"}
+{"prompt": "The smooth black leather jacket hung next to the rugged brown boots.", "category": "complex"}
+{"prompt": "a yellow grass and a green dandelion", "category": "color"}
+{"prompt": "a plastic bag and a fabric pants", "category": "texture"}
+{"prompt": "The wooden ruler and glass magnifying glass measure the metallic screws on the fabric workbench.", "category": "texture"}
+{"prompt": "a round cookie and a square tin", "category": "shape"}
+{"prompt": "a key behind a candle", "category": "3d_spatial"}
+{"prompt": "a blue banana and a green boat", "category": "color"}
+{"prompt": "a computer behind a table", "category": "3d_spatial"}
+{"prompt": "a pyramidal puzzle box and a cubic puzzle piece", "category": "shape"}
+{"prompt": "a metallic desk lamp and a glass cup", "category": "texture"}
+{"prompt": "A black and green tile bathroom with a yellow toilet and a black bucket on the floor.", "category": "color"}
+{"prompt": "The triangular sail and the square deck were the defining features of the sailboat.", "category": "shape"}
+{"prompt": "five trains passed by the station", "category": "numeracy"}
+{"prompt": "a fabric pants and a fluffy rug", "category": "texture"}
+{"prompt": "a spherical basketball and a conical referee hat", "category": "shape"}
+{"prompt": "A person is wearing a chef's hat and cooking a meal.", "category": "non_spatial"}
+{"prompt": "a frog on the right of a couch", "category": "spatial"}
+{"prompt": "The metallic pan and plastic spatula cook the fluffy eggs on the wooden stove.", "category": "texture"}
+{"prompt": "a microwave hidden by a sheep", "category": "3d_spatial"}
+{"prompt": "The flickering light bulb brightened the dark room and the dim hallway.", "category": "complex"}
+{"prompt": "A woman is holding a camera and taking photos of a beautiful landscape.", "category": "non_spatial"}
+{"prompt": "fluffy clouds and a glass table", "category": "texture"}
+{"prompt": "a pink lipstick and a red blush", "category": "color"}
+{"prompt": "a cow on the top of a painting", "category": "spatial"}
+{"prompt": "a rectangular table and a round lamp", "category": "shape"}
+{"prompt": "rubber sole shoes and a fluffy teddy bear", "category": "texture"}
+{"prompt": "The green plant was on the left of the yellow lamp.", "category": "complex"}
+{"prompt": "three airplanes, two cups, one chair, two lemons and four bowls", "category": "numeracy"}
+{"prompt": "The sleek black sports bike sped past the bright green trees.", "category": "complex"}
+{"prompt": "A person is holding a megaphone and leading a protest.", "category": "non_spatial"}
+{"prompt": "a pig behind a boy", "category": "3d_spatial"}
+{"prompt": "A storm is brewing in the distance.", "category": "non_spatial"}
+{"prompt": "a desk on the top of a cat", "category": "spatial"}
+{"prompt": "a rubber ball and a glass mirror", "category": "texture"}
+{"prompt": "five knives", "category": "numeracy"}
+{"prompt": "The rectangular mirror was hung above the wooden shelf.", "category": "complex"}
+{"prompt": "one frog, two fish, two tents, four phones and three turtles", "category": "numeracy"}
+{"prompt": "six airplanes", "category": "numeracy"}
+{"prompt": "six people gathered for a picnic", "category": "numeracy"}
+{"prompt": "a red tomato and a yellow pepper", "category": "color"}
+{"prompt": "The juicy burger sat on the soft bun and the crispy lettuce.", "category": "complex"}
+{"prompt": "a cat behind a boy", "category": "3d_spatial"}
+{"prompt": "a phone hidden by a frog", "category": "3d_spatial"}
+{"prompt": "a round bagel and a rectangular toaster", "category": "shape"}
+{"prompt": "a fish on side of a bag", "category": "spatial"}
+{"prompt": "a painting behind a boy", "category": "3d_spatial"}
+{"prompt": "The leather shoes and fluffy socks rest on the metallic rack by the glass door.", "category": "texture"}
+{"prompt": "a diamond ring and a pyramidal ring box", "category": "shape"}
+{"prompt": "three mice, three women, four boats, a bird, and four bottles cluttered the shelf", "category": "numeracy"}
+{"prompt": "a man hidden by a computer", "category": "3d_spatial"}
+{"prompt": "a metallic spoon and a wooden chair", "category": "texture"}
+{"prompt": "two balloons floated with four mice", "category": "numeracy"}
+{"prompt": "The sleek silver airplane flew above the fluffy white clouds.", "category": "complex"}
+{"prompt": "a brown tree and a green grass", "category": "color"}
+{"prompt": "wooden pencils and a fluffy scarf", "category": "texture"}
+{"prompt": "a black cat and a white whisker", "category": "color"}
+{"prompt": "eight cars", "category": "numeracy"}
+{"prompt": "an oblong cucumber and a teardrop plum", "category": "shape"}
+{"prompt": "a red backpack and a blue orange", "category": "color"}
+{"prompt": "a brown apple and a green horse", "category": "color"}
+{"prompt": "The fluffy white clouds floated above the deep blue sea.", "category": "complex"}
+{"prompt": "a red hat and a black scarf", "category": "color"}
+{"prompt": "A couple is relaxing in a hammock under the shade of a tree.", "category": "non_spatial"}
+{"prompt": "seven printers", "category": "numeracy"}
+{"prompt": "a turtle behind a pig", "category": "3d_spatial"}
+{"prompt": "a black squirrel and a brown nut", "category": "color"}
+{"prompt": "a rabbit on side of a suitcase", "category": "spatial"}
+{"prompt": "a bee on the left of a key", "category": "spatial"}
+{"prompt": "a fish near a cup", "category": "spatial"}
+{"prompt": "a car behind a clock", "category": "3d_spatial"}
+{"prompt": "a metallic desk lamp and a leather jacket", "category": "texture"}
+{"prompt": "six ducks", "category": "numeracy"}
+{"prompt": "two drums added rhythm to the music", "category": "numeracy"}
+{"prompt": "one lamp, three bananas and three chickens", "category": "numeracy"}
+{"prompt": "A man is running a marathon and crossing the finish line.", "category": "non_spatial"}
+{"prompt": "three bears, two girls, one chair, three cups and three chickens", "category": "numeracy"}
+{"prompt": "a dog on side of a computer", "category": "spatial"}

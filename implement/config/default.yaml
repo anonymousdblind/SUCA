@@ -1,0 +1,75 @@
+# SUCA: Semantic Unit Credit Assignment for Diffusion RL
+# Default configuration
+
+model:
+  # Diffusion model (SD3.5 Medium — MMDiT architecture)
+  pretrained_model_name: "models/stable-diffusion-3.5-medium"
+  # Load SFT warmup checkpoint
+  warmup_checkpoint: "outputs/warmup/checkpoint-7000/transformer"
+  # VLM for reward evaluation (Qwen3-VL: strong counting, attribute binding, spatial)
+  vlm_model_name: "models/Qwen3-VL-8B-Instruct"
+  # Semantic parsing: rule-based (no LLM needed)
+  parser_model_name: null
+
+# Multi-GPU device assignment
+devices:
+  diffusion: "cuda:0"
+  vlm: "cuda:1"
+  ref: "cuda:2"
+
+diffusion:
+  num_inference_steps: 28
+  guidance_scale: 7.0
+  resolution: 512
+
+training:
+  num_epochs: 100
+  samples_per_prompt: 4
+  batch_size: 2
+  learning_rate: 1.0e-6
+  max_grad_norm: 1.0
+  kl_coef: 0.01
+  # Number of samples for uncertainty estimation
+  num_uncertainty_samples: 4
+  # Gradient accumulation steps
+  gradient_accumulation_steps: 4
+
+suca:
+  # Temperature for responsibility matrix softmax
+  tau: 0.1
+  # Uncertainty penalty weight
+  lambda_u: 0.5
+  # Joint attention layers to capture (SD3.5-M has 24 blocks, 0-12 dual attention)
+  attention_layers: [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]
+  # Top-m spatial positions for aggregation
+  top_m_spatial: 64
+  # Whether to use unit-level baseline
+  use_unit_baseline: true
+
+data:
+  # Prompt dataset
+  prompt_file: "data/prompts.json"
+  # Max prompts per epoch
+  max_prompts_per_epoch: 500
+
+eval:
+  # GenEval2 benchmark for periodic evaluation
+  benchmark_file: "data/geneval2/geneval2_data.jsonl"
+  # Number of prompts to evaluate (subset for speed)
+  num_eval_prompts: 50
+  # Evaluate every N training steps
+  eval_interval: 100
+  # Number of inference steps for eval (can differ from training)
+  num_inference_steps: 28
+
+logging:
+  wandb_project: "suca-diffusion-rl"
+  wandb_entity: null
+  log_interval: 10
+  save_interval: 500
+  output_dir: "outputs"
+  analysis_dir: null
+  save_images: true
+  num_save_images: 4
+  # Checkpoint management: keep last N + best
+  keep_last_n: 2

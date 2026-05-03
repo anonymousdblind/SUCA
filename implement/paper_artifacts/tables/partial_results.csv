@@ -1,0 +1,8 @@
+Metric,Base SD3.5,SFT warmup,Best RL run
+GenEval2 soft_tifa_gm,16.91,21.93,--
+GenEval2 Attribute,67.85,72.26,--
+GenEval2 Count,42.97,47.49,--
+SpatialGenEval avg_acc,64.08,66.40,--
+ImageReward,--,--,1.09
+Attribute reward change,--,--,27%
+Advantage separability,--,--,15x

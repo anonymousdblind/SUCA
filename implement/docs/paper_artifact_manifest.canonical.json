@@ -1,0 +1,67 @@
+{
+  "methods_order": [
+    "SD3.5-Medium",
+    "SFT warmup",
+    "DDPO",
+    "DPOK",
+    "Flow-GRPO w/o \\method",
+    "\\method"
+  ],
+  "benchmarks": {
+    "geneval2": {
+      "metadata_path": "data/geneval2/geneval2_data.jsonl",
+      "runs": {
+        "SD3.5-Medium": {"path": "analysis/summaries/geneval2/base.json", "format": "normalized_benchmark"},
+        "SFT warmup": {"path": "analysis/summaries/geneval2/sft_warmup.json", "format": "normalized_benchmark"},
+        "Flow-GRPO w/o \\method": {"path": "analysis/summaries/geneval2/flow_grpo_scalar.json", "format": "normalized_benchmark"},
+        "\\method": {"path": "analysis/summaries/geneval2/suca.json", "format": "normalized_benchmark"}
+      }
+    },
+    "spatialgeneval": {
+      "runs": {
+        "SD3.5-Medium": {"path": "analysis/summaries/spatialgeneval/base.json", "format": "normalized_benchmark"},
+        "SFT warmup": {"path": "analysis/summaries/spatialgeneval/sft_warmup.json", "format": "normalized_benchmark"},
+        "Flow-GRPO w/o \\method": {"path": "analysis/summaries/spatialgeneval/flow_grpo_scalar.json", "format": "normalized_benchmark"},
+        "\\method": {"path": "analysis/summaries/spatialgeneval/suca.json", "format": "normalized_benchmark"}
+      }
+    },
+    "dpgbench": {
+      "runs": {
+        "SD3.5-Medium": {"path": "analysis/summaries/dpgbench/base.json", "format": "normalized_benchmark"},
+        "Flow-GRPO w/o \\method": {"path": "analysis/summaries/dpgbench/flow_grpo_scalar.json", "format": "normalized_benchmark"},
+        "\\method": {"path": "analysis/summaries/dpgbench/suca.json", "format": "normalized_benchmark"}
+      }
+    }
+  },
+  "partial_results": {
+    "training_diagnostics": {
+      "path": "eval_results/normalized/training_diagnostics.json"
+    }
+  },
+  "training_config": [
+    ["Base model", "SD3.5-Medium", "2.3B parameters"],
+    ["Software stack", "Python 3.10, PyTorch 2.6.0", "CUDA 12.4 wheels, driver 535+"],
+    ["SFT warmup", "Fine-T2I warmup_100k", "7500 steps, checkpoint-7000"],
+    ["RL prompts", "5559", "T2I-CompBench compositional split"],
+    ["Training GPUs", "8x80GB", "6 sampler/update + 2 reward servers"],
+    ["Judge", "Qwen3-VL-8B-Instruct", "batched VQA scoring"],
+    ["Parameter update scope", "full-parameter bf16", "LoRA disabled in reference runs"],
+    ["Gradient checkpointing", "enabled", "required for memory headroom"],
+    ["Gradient clip", "1.0", "global norm"],
+    ["CFG", "4.5", "10 denoising steps"]
+  ],
+  "time_breakdown": {
+    "path": "analysis/time/time_breakdown.json",
+    "interpretation": {
+      "Image sampling": "rollout and decoding",
+      "Semantic parsing": "unit construction overhead",
+      "VLM verification": "reward-side cost",
+      "Routing aggregation": "build C[k,t]",
+      "Backward step": "weighted optimization"
+    }
+  },
+  "reward_curves": [
+    {"label": "Flow-GRPO w/o \\method", "path": "analysis/curves/scalar_reward_curves.csv"},
+    {"label": "\\method", "path": "analysis/curves/suca_reward_curves.csv"}
+  ]
+}

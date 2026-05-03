@@ -1,0 +1,5 @@
+Configuration,GenEval2,SpatialGenEval,DPG-Bench,Relative Cost
+Flow-GRPO + scalar reward,--,--,--,1.00x
+Flow-GRPO + \method,--,--,--,1.18x
+w/ scalar fallback,--,--,--,1.10x
+w/ uniform C,--,--,--,1.18x

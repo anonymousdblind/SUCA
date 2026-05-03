@@ -1,0 +1,11 @@
+Component,Value,Notes
+Base model,SD3.5-Medium,2.3B parameters
+Software stack,"Python 3.10, PyTorch 2.6.0","CUDA 12.4 wheels, driver 535+"
+SFT warmup,Fine-T2I warmup_100k,"7500 steps, checkpoint-7000"
+RL prompts,5559,T2I-CompBench compositional split
+Training GPUs,8x80GB,6 sampler/update + 2 reward servers
+Judge,Qwen3-VL-8B-Instruct,batched VQA scoring
+Parameter update scope,full-parameter bf16,LoRA disabled in reference runs
+Gradient checkpointing,enabled,required for memory headroom
+Gradient clip,1.0,global norm
+CFG,4.5,10 denoising steps
