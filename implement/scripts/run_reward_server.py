@@ -35,22 +35,33 @@ def load_model(model_path, gpu_id):
     os.environ["CUDA_VISIBLE_DEVICES"] = str(gpu_id)
     device = "cuda:0"
 
-    from transformers import AutoProcessor
+    import transformers
+    from transformers import AutoModelForImageTextToText, AutoModelForVision2Seq, AutoProcessor
     # Auto-detect model class based on config
     import json as _json
     with open(os.path.join(model_path, "config.json")) as _f:
         _cfg = _json.load(_f)
     arch = _cfg.get("architectures", [""])[0]
     logger.info(f"Loading {arch} from {model_path} on GPU {gpu_id}...")
-    if "Qwen3VL" in arch:
-        from transformers import Qwen3VLForConditionalGeneration
-        model_cls = Qwen3VLForConditionalGeneration
-    elif "Qwen2_5_VL" in arch or "Qwen2.5" in arch:
-        from transformers import Qwen2_5_VLForConditionalGeneration
-        model_cls = Qwen2_5_VLForConditionalGeneration
-    else:
-        from transformers import AutoModelForVision2Seq
+    model_cls = getattr(transformers, arch, None)
+    if model_cls is None and "Qwen" in arch:
+        logger.warning(
+            "Transformers does not expose %s; falling back to AutoModelForImageTextToText",
+            arch,
+        )
+        model_cls = AutoModelForImageTextToText
+    elif model_cls is None:
+        logger.warning(
+            "Unknown vision-language architecture %s; falling back to AutoModelForVision2Seq",
+            arch,
+        )
         model_cls = AutoModelForVision2Seq
+
+    if model_cls is AutoModelForImageTextToText:
+        logger.info("Using AutoModelForImageTextToText fallback for %s", arch)
+    else:
+        logger.info("Using resolved model class %s", getattr(model_cls, "__name__", str(model_cls)))
+
     processor = AutoProcessor.from_pretrained(model_path, trust_remote_code=True)
     # Decoder-only models require left-padding for correct batched generation
     processor.tokenizer.padding_side = "left"
