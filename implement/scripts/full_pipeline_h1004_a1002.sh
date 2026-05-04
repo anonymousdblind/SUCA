@@ -75,14 +75,38 @@ PY
 wait_for_health() {
   local url="$1"
   local name="$2"
-  for _ in $(seq 1 60); do
+  local pid="$3"
+  local log_file="$4"
+  local max_checks="${5:-240}"
+  local sleep_seconds="${6:-5}"
+
+  for attempt in $(seq 1 "$max_checks"); do
     if curl -fsS "$url" >/dev/null 2>&1; then
       log "$name is ready: $url"
       return 0
     fi
-    sleep 3
+
+    if ! kill -0 "$pid" 2>/dev/null; then
+      if [[ -f "$log_file" ]]; then
+        echo "----- ${name} log tail (${log_file}) -----" >&2
+        tail -n 80 "$log_file" >&2 || true
+        echo "------------------------------------------" >&2
+      fi
+      die "$name exited before becoming healthy: $url"
+    fi
+
+    if (( attempt % 12 == 0 )); then
+      log "Waiting for ${name} (${attempt}/${max_checks}); log: ${log_file}"
+    fi
+    sleep "$sleep_seconds"
   done
-  die "$name failed health check: $url"
+
+  if [[ -f "$log_file" ]]; then
+    echo "----- ${name} log tail (${log_file}) -----" >&2
+    tail -n 80 "$log_file" >&2 || true
+    echo "------------------------------------------" >&2
+  fi
+  die "$name failed health check after $((max_checks * sleep_seconds))s: $url"
 }
 
 cleanup() {
@@ -194,17 +218,21 @@ start_local_reward_servers() {
   mkdir -p "$TRAIN_LOG_DIR"
   pkill -f "scripts/run_reward_server.py --model" 2>/dev/null || true
 
-  local reward_gpu reward_port
+  local reward_gpu reward_port reward_log reward_pid
   reward_gpu=${LOCAL_REWARD_GPUS}
   reward_port=8101
+  reward_log="$TRAIN_LOG_DIR/reward_gpu${reward_gpu}.log"
 
   nohup "$PYTHON_BIN" -u scripts/run_reward_server.py \
     --model "$MODEL_ROOT/Qwen3-VL-8B-Instruct" \
     --gpu "$reward_gpu" \
     --port "$reward_port" \
-    > "$TRAIN_LOG_DIR/reward_gpu${reward_gpu}.log" 2>&1 &
+    > "$reward_log" 2>&1 &
 
-  wait_for_health "http://127.0.0.1:${reward_port}/health" "reward server ${reward_port}"
+  reward_pid=$!
+  log "Reward server PID: ${reward_pid}; startup log: ${reward_log}"
+
+  wait_for_health "http://127.0.0.1:${reward_port}/health" "reward server ${reward_port}" "$reward_pid" "$reward_log" 240 5
 }
 
 run_rl_train() {
