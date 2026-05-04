@@ -26,20 +26,20 @@ RL_RESULT_DIR=${RESULT_ROOT}/rl
 COMPARISON_MD=${PROJECT_HOME}/baseline_comparison_auto.md
 WARMUP_LOG=${TRAIN_LOG_DIR}/warmup.log
 
-H100_WARMUP_GPUS=${H100_WARMUP_GPUS:-0,1,5}
-H100_TRAIN_GPUS=${H100_TRAIN_GPUS:-0,1,5}
-EVAL_GEN_GPU=${EVAL_GEN_GPU:-0}
-EVAL_QWEN_GPU=${EVAL_QWEN_GPU:-5}
-LOCAL_REWARD_GPUS=${LOCAL_REWARD_GPUS:-5}
+H100_WARMUP_GPUS=${H100_WARMUP_GPUS:-1,5}
+H100_TRAIN_GPUS=${H100_TRAIN_GPUS:-1,5}
+EVAL_GEN_GPU=${EVAL_GEN_GPU:-3}
+EVAL_QWEN_GPU=${EVAL_QWEN_GPU:-3}
+LOCAL_REWARD_GPUS=${LOCAL_REWARD_GPUS:-3}
 USE_REMOTE_REWARD=${USE_REMOTE_REWARD:-0}
 A100_HOST=${A100_HOST:-localhost}
 WANDB_API_KEY=${WANDB_API_KEY:-2b9b4e9f586c76970ab77b0aded7fc04c909d288}
 
-H100_WARMUP_GPUS=0,1,5
-H100_TRAIN_GPUS=0,1,5
-EVAL_GEN_GPU=0
-EVAL_QWEN_GPU=5
-LOCAL_REWARD_GPUS=5
+H100_WARMUP_GPUS=1,5
+H100_TRAIN_GPUS=1,5
+EVAL_GEN_GPU=3
+EVAL_QWEN_GPU=3
+LOCAL_REWARD_GPUS=3
 USE_REMOTE_REWARD=0
 A100_HOST=localhost
 
@@ -216,7 +216,7 @@ activate_env() {
 }
 
 run_warmup() {
-  log "Running 3xH100 warmup"
+  log "Running 2xH100 warmup"
   activate_env
   local num_processes
   num_processes=$(count_csv_items "$H100_WARMUP_GPUS")
@@ -244,7 +244,7 @@ run_warmup() {
 }
 
 start_local_reward_servers() {
-  log "Starting colocated reward server on H100 GPU ${LOCAL_REWARD_GPUS}"
+  log "Starting colocated reward server on GPU ${LOCAL_REWARD_GPUS}"
   activate_env
   mkdir -p "$TRAIN_LOG_DIR"
   pkill -f "scripts/run_reward_server.py --model" 2>/dev/null || true
@@ -267,7 +267,7 @@ start_local_reward_servers() {
 }
 
 run_rl_train() {
-  log "Running 3xH100 RL training"
+  log "Running 2xH100 RL training"
   activate_env
   export WANDB_API_KEY
   export SUCA_REWARD_PORTS=8101
@@ -282,7 +282,7 @@ run_rl_train() {
     --mixed_precision bf16 \
     --multi_gpu \
     flow_grpo/scripts/train_sd3_suca.py \
-    --config flow_grpo/config/suca.py:suca_sd3_4gpu \
+    --config flow_grpo/config/suca.py:suca_sd3_2gpu \
     2>&1 | tee "$TRAIN_LOG"
 }
 

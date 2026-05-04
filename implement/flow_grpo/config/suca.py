@@ -280,10 +280,30 @@ def suca_sd3_4gpu():
     config.sample.test_batch_size = 2
     return config
 
+def suca_sd3_2gpu():
+    config = ablation_with_suca()
+    config.sample.train_batch_size = 2
+    config.sample.num_image_per_prompt = 4
+    config.sample.num_batches_per_epoch = 2
+    config.train.batch_size = 2
+    config.sample.test_batch_size = 2
+    return config
+
+def suca_sd3_3gpu():
+    config = ablation_with_suca()
+    config.sample.train_batch_size = 2
+    config.sample.num_image_per_prompt = 3
+    config.sample.num_batches_per_epoch = 2
+    config.train.batch_size = 2
+    config.sample.test_batch_size = 2
+    return config
+
 def get_config(config_string="suca_sd3_8gpu"):
     configs = {
         "suca_sd3_8gpu": suca_sd3_8gpu,
+        "suca_sd3_2gpu": suca_sd3_2gpu,
         "suca_sd3_4gpu": suca_sd3_4gpu,
+        "suca_sd3_3gpu": suca_sd3_3gpu,
         "ablation_no_suca": ablation_no_suca,
         "ablation_with_suca": ablation_with_suca,
         "suca_compositional": suca_compositional,
