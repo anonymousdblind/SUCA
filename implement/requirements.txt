@@ -6,3 +6,5 @@ hydra-core>=1.3.0
 omegaconf>=2.3.0
 Pillow>=10.0.0
 matplotlib>=3.7.0
+image-reward
+git+https://github.com/openai/CLIP.git

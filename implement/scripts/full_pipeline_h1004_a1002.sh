@@ -64,6 +64,23 @@ die() {
   exit 1
 }
 
+ensure_python_import() {
+  local module="$1"
+  shift
+  if "$PYTHON_BIN" -c "import ${module}" >/dev/null 2>&1; then
+    return 0
+  fi
+
+  log "Installing missing Python dependency for ${module}: $*"
+  "$PYTHON_BIN" -m pip install "$@"
+}
+
+ensure_runtime_dependencies() {
+  log "Checking runtime Python dependencies"
+  ensure_python_import ImageReward image-reward
+  ensure_python_import clip git+https://github.com/openai/CLIP.git
+}
+
 count_csv_items() {
   python3 - <<'PY' "$1"
 import sys
@@ -172,6 +189,8 @@ prepare_layout() {
   if [[ -d "$DATA_ROOT/geneval_compositional" ]]; then
     ln -sfn "$DATA_ROOT/geneval_compositional" "$ROOT/dataset/geneval_compositional"
   fi
+
+  ensure_runtime_dependencies
 }
 
 activate_env() {
