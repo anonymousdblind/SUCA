@@ -26,8 +26,8 @@ RL_RESULT_DIR=${RESULT_ROOT}/rl
 COMPARISON_MD=${PROJECT_HOME}/baseline_comparison_auto.md
 WARMUP_LOG=${TRAIN_LOG_DIR}/warmup.log
 
-H100_WARMUP_GPUS=${H100_WARMUP_GPUS:-0,1,4,5}
-H100_TRAIN_GPUS=${H100_TRAIN_GPUS:-0,1,4,5}
+H100_WARMUP_GPUS=${H100_WARMUP_GPUS:-0,1,5}
+H100_TRAIN_GPUS=${H100_TRAIN_GPUS:-0,1,5}
 EVAL_GEN_GPU=${EVAL_GEN_GPU:-0}
 EVAL_QWEN_GPU=${EVAL_QWEN_GPU:-5}
 LOCAL_REWARD_GPUS=${LOCAL_REWARD_GPUS:-5}
@@ -35,8 +35,8 @@ USE_REMOTE_REWARD=${USE_REMOTE_REWARD:-0}
 A100_HOST=${A100_HOST:-localhost}
 WANDB_API_KEY=${WANDB_API_KEY:-2b9b4e9f586c76970ab77b0aded7fc04c909d288}
 
-H100_WARMUP_GPUS=0,1,4,5
-H100_TRAIN_GPUS=0,1,4,5
+H100_WARMUP_GPUS=0,1,5
+H100_TRAIN_GPUS=0,1,5
 EVAL_GEN_GPU=0
 EVAL_QWEN_GPU=5
 LOCAL_REWARD_GPUS=5
@@ -79,6 +79,17 @@ ensure_runtime_dependencies() {
   log "Checking runtime Python dependencies"
   ensure_python_import ImageReward image-reward
   ensure_python_import clip git+https://github.com/openai/CLIP.git
+}
+
+configure_reward_stack() {
+  export SUCA_DISABLE_IMAGEREWARD=0
+  if ! "$PYTHON_BIN" - <<'PY' >/dev/null 2>&1
+import ImageReward  # noqa: F401
+PY
+  then
+    export SUCA_DISABLE_IMAGEREWARD=1
+    log "ImageReward is incompatible with the current transformers environment; falling back to suca_vqa-only RL reward"
+  fi
 }
 
 count_csv_items() {
@@ -191,6 +202,7 @@ prepare_layout() {
   fi
 
   ensure_runtime_dependencies
+  configure_reward_stack
 }
 
 activate_env() {
@@ -204,7 +216,7 @@ activate_env() {
 }
 
 run_warmup() {
-  log "Running 4xH100 warmup"
+  log "Running 3xH100 warmup"
   activate_env
   local num_processes
   num_processes=$(count_csv_items "$H100_WARMUP_GPUS")
@@ -255,10 +267,13 @@ start_local_reward_servers() {
 }
 
 run_rl_train() {
-  log "Running 4xH100 RL training"
+  log "Running 3xH100 RL training"
   activate_env
   export WANDB_API_KEY
   export SUCA_REWARD_PORTS=8101
+  if [[ "${SUCA_DISABLE_IMAGEREWARD:-0}" == "1" ]]; then
+    log "RL reward stack: suca_vqa-only (ImageReward disabled due environment incompatibility)"
+  fi
   local num_processes
   num_processes=$(count_csv_items "$H100_TRAIN_GPUS")
   CUDA_VISIBLE_DEVICES="$H100_TRAIN_GPUS" \

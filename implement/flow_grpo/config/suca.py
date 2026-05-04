@@ -48,9 +48,15 @@ def _common_config():
     config.train.ema = True
     config.train.sft = 0.0
 
-    # Rewards — ImageReward (global quality) + suca_vqa margin (per-unit, for SUCA credit)
-    # suca_vqa now returns log-margin (range ~[-5,+10]), weight 0.2 to balance with ImageReward [-2,+2]
-    config.reward_fn = {"imagereward": 1.0, "suca_vqa": 0.2}
+    # Rewards — default to ImageReward (global quality) + suca_vqa margin (per-unit, for SUCA credit).
+    # In the current single-environment pipeline, ImageReward may be incompatible with the
+    # transformers version required by Qwen3-VL. In that case the launcher sets
+    # SUCA_DISABLE_IMAGEREWARD=1 and we fall back to a suca_vqa-only reward stack.
+    if os.environ.get("SUCA_DISABLE_IMAGEREWARD", "0") == "1":
+        config.reward_fn = {"suca_vqa": 1.0}
+    else:
+        # suca_vqa now returns log-margin (range ~[-5,+10]), weight 0.2 to balance with ImageReward [-2,+2]
+        config.reward_fn = {"imagereward": 1.0, "suca_vqa": 0.2}
     config.prompt_fn = "geneval"
     config.per_prompt_stat_tracking = True
 
