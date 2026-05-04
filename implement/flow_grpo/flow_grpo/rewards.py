@@ -421,7 +421,9 @@ def suca_vqa_score(device):
     _reward_logger = _logging.getLogger("reward-diag")
     _reward_logger.setLevel(_logging.DEBUG)
     if not _reward_logger.handlers:
-        _rh = _logging.FileHandler("outputs/ablation/reward_diag.log", mode="a")
+        _diag_log = "outputs/ablation/reward_diag.log"
+        _os.makedirs(_os.path.dirname(_diag_log), exist_ok=True)
+        _rh = _logging.FileHandler(_diag_log, mode="a")
         _rh.setFormatter(_logging.Formatter("%(asctime)s %(message)s"))
         _reward_logger.addHandler(_rh)
 
