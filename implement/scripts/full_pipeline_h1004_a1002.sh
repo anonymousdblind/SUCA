@@ -26,20 +26,20 @@ RL_RESULT_DIR=${RESULT_ROOT}/rl
 COMPARISON_MD=${PROJECT_HOME}/baseline_comparison_auto.md
 WARMUP_LOG=${TRAIN_LOG_DIR}/warmup.log
 
-H100_WARMUP_GPUS=${H100_WARMUP_GPUS:-0,1,2,3}
-H100_TRAIN_GPUS=${H100_TRAIN_GPUS:-0,1,2,3}
+H100_WARMUP_GPUS=${H100_WARMUP_GPUS:-0,1,4,5}
+H100_TRAIN_GPUS=${H100_TRAIN_GPUS:-0,1,4,5}
 EVAL_GEN_GPU=${EVAL_GEN_GPU:-0}
-EVAL_QWEN_GPU=${EVAL_QWEN_GPU:-0}
-LOCAL_REWARD_GPUS=${LOCAL_REWARD_GPUS:-4,5}
-USE_REMOTE_REWARD=${USE_REMOTE_REWARD:-1}
-A100_HOST=${A100_HOST:-}
+EVAL_QWEN_GPU=${EVAL_QWEN_GPU:-5}
+LOCAL_REWARD_GPUS=${LOCAL_REWARD_GPUS:-5}
+USE_REMOTE_REWARD=${USE_REMOTE_REWARD:-0}
+A100_HOST=${A100_HOST:-localhost}
 WANDB_API_KEY=${WANDB_API_KEY:-2b9b4e9f586c76970ab77b0aded7fc04c909d288}
 
 H100_WARMUP_GPUS=0,1,4,5
 H100_TRAIN_GPUS=0,1,4,5
 EVAL_GEN_GPU=0
-EVAL_QWEN_GPU=2
-LOCAL_REWARD_GPUS=2,3
+EVAL_QWEN_GPU=5
+LOCAL_REWARD_GPUS=5
 USE_REMOTE_REWARD=0
 A100_HOST=localhost
 
@@ -185,40 +185,33 @@ run_warmup() {
     --mixed_precision bf16 \
     2>&1 | tee "$WARMUP_LOG"
 
-  require_path "$WARMUP_OUTPUT_DIR/checkpoint-7000/transformer"
+  require_path "$WARMUP_OUTPUT_DIR/checkpoint-final/transformer"
 }
 
 start_local_reward_servers() {
-  log "Starting local reward servers on A100 GPUs ${LOCAL_REWARD_GPUS}"
+  log "Starting colocated reward server on H100 GPU ${LOCAL_REWARD_GPUS}"
   activate_env
   mkdir -p "$TRAIN_LOG_DIR"
   pkill -f "scripts/run_reward_server.py --model" 2>/dev/null || true
 
-  local gpu0 gpu1
-  gpu0=${LOCAL_REWARD_GPUS%%,*}
-  gpu1=${LOCAL_REWARD_GPUS##*,}
+  local reward_gpu reward_port
+  reward_gpu=${LOCAL_REWARD_GPUS}
+  reward_port=8101
 
   nohup "$PYTHON_BIN" -u scripts/run_reward_server.py \
     --model "$MODEL_ROOT/Qwen3-VL-8B-Instruct" \
-    --gpu "$gpu0" \
-    --port 8100 \
-    > "$TRAIN_LOG_DIR/reward_gpu${gpu0}.log" 2>&1 &
+    --gpu "$reward_gpu" \
+    --port "$reward_port" \
+    > "$TRAIN_LOG_DIR/reward_gpu${reward_gpu}.log" 2>&1 &
 
-  nohup "$PYTHON_BIN" -u scripts/run_reward_server.py \
-    --model "$MODEL_ROOT/Qwen3-VL-8B-Instruct" \
-    --gpu "$gpu1" \
-    --port 8101 \
-    > "$TRAIN_LOG_DIR/reward_gpu${gpu1}.log" 2>&1 &
-
-  wait_for_health "http://127.0.0.1:8100/health" "reward server 8100"
-  wait_for_health "http://127.0.0.1:8101/health" "reward server 8101"
+  wait_for_health "http://127.0.0.1:${reward_port}/health" "reward server ${reward_port}"
 }
 
 run_rl_train() {
   log "Running 4xH100 RL training"
   activate_env
   export WANDB_API_KEY
-  export SUCA_REWARD_PORTS=8100,8101
+  export SUCA_REWARD_PORTS=8101
   local num_processes
   num_processes=$(count_csv_items "$H100_TRAIN_GPUS")
   CUDA_VISIBLE_DEVICES="$H100_TRAIN_GPUS" \
@@ -355,13 +348,15 @@ write_comparison() {
 
 main() {
   prepare_layout
-  run_warmup
+
+  # Completed already: warmup finished at outputs/warmup/checkpoint-final.
+  # run_warmup
 
   start_local_reward_servers
   run_rl_train
 
   local warmup_transformer rl_transformer
-  warmup_transformer="$WARMUP_OUTPUT_DIR/checkpoint-7000/transformer"
+  warmup_transformer="$WARMUP_OUTPUT_DIR/checkpoint-final/transformer"
   rl_transformer="$(resolve_rl_transformer)"
 
   generate_variant base "$BASE_RESULT_DIR"
