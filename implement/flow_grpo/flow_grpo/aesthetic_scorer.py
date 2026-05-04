@@ -1,13 +1,27 @@
 # Based on https://github.com/christophschuhmann/improved-aesthetic-predictor/blob/fe88a163f4661b4ddabba0751ff645e2e620746e/simple_inference.py
 
 from importlib import resources
+import os
 import torch
 import torch.nn as nn
 import numpy as np
 from transformers import CLIPModel, CLIPProcessor
 from PIL import Image
 
-ASSETS_PATH = resources.files("flow_grpo.assets")
+
+
+def _resolve_asset_file(filename):
+    try:
+        asset_path = resources.files("flow_grpo.assets").joinpath(filename)
+    except ModuleNotFoundError:
+        candidate_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "assets")
+        asset_path = os.path.join(candidate_dir, filename)
+
+    if not os.path.exists(asset_path):
+        raise FileNotFoundError(
+            f"Missing Flow-GRPO asset: {filename}. Expected it under flow_grpo.assets or a local assets/ directory."
+        )
+    return asset_path
 
 
 class MLP(nn.Module):
@@ -35,9 +49,7 @@ class AestheticScorer(torch.nn.Module):
         self.clip = CLIPModel.from_pretrained("openai/clip-vit-large-patch14")
         self.processor = CLIPProcessor.from_pretrained("openai/clip-vit-large-patch14")
         self.mlp = MLP()
-        state_dict = torch.load(
-            ASSETS_PATH.joinpath("sac+logos+ava1-l14-linearMSE.pth")
-        )
+        state_dict = torch.load(_resolve_asset_file("sac+logos+ava1-l14-linearMSE.pth"))
         self.mlp.load_state_dict(state_dict)
         self.dtype = dtype
         self.eval()

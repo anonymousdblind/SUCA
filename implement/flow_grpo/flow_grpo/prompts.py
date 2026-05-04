@@ -6,7 +6,16 @@ import random
 
 # IE = inflect.engine()
 IE=None
-ASSETS_PATH = resources.files("flow_grpo.assets")
+
+
+def _resolve_assets_path():
+    try:
+        return resources.files("flow_grpo.assets")
+    except ModuleNotFoundError:
+        candidate = os.path.join(os.path.dirname(os.path.dirname(__file__)), "assets")
+        if os.path.isdir(candidate):
+            return candidate
+        return None
 
 
 @functools.cache
@@ -15,8 +24,17 @@ def _load_lines(path):
     Load lines from a file. First tries to load from `path` directly, and if that doesn't exist, searches the
     `flow_grpo/assets` directory for a file named `path`.
     """
+    newpath = path
     if not os.path.exists(path):
-        newpath = ASSETS_PATH.joinpath(path)
+        assets_path = _resolve_assets_path()
+        if assets_path is None:
+            raise FileNotFoundError(
+                f"Could not find {path} and flow_grpo assets directory is unavailable"
+            )
+        if hasattr(assets_path, "joinpath"):
+            newpath = assets_path.joinpath(path)
+        else:
+            newpath = os.path.join(assets_path, path)
     if not os.path.exists(newpath):
         raise FileNotFoundError(f"Could not find {path} or flow_grpo.assets/{path}")
     path = newpath
