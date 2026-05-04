@@ -36,29 +36,64 @@ def load_model(model_path, gpu_id):
     device = "cuda:0"
 
     import transformers
-    from transformers import AutoModelForImageTextToText, AutoModelForVision2Seq, AutoProcessor
+    from transformers import AutoProcessor
     # Auto-detect model class based on config
     import json as _json
     with open(os.path.join(model_path, "config.json")) as _f:
         _cfg = _json.load(_f)
     arch = _cfg.get("architectures", [""])[0]
     logger.info(f"Loading {arch} from {model_path} on GPU {gpu_id}...")
+
+    auto_image_text_cls = getattr(transformers, "AutoModelForImageTextToText", None)
+    auto_vision2seq_cls = getattr(transformers, "AutoModelForVision2Seq", None)
+    auto_model_cls = getattr(transformers, "AutoModel", None)
+
     model_cls = getattr(transformers, arch, None)
     if model_cls is None and "Qwen" in arch:
-        logger.warning(
-            "Transformers does not expose %s; falling back to AutoModelForImageTextToText",
-            arch,
-        )
-        model_cls = AutoModelForImageTextToText
+        if auto_image_text_cls is not None:
+            logger.warning(
+                "Transformers does not expose %s; falling back to AutoModelForImageTextToText",
+                arch,
+            )
+            model_cls = auto_image_text_cls
+        elif auto_vision2seq_cls is not None:
+            logger.warning(
+                "Transformers does not expose %s; falling back to AutoModelForVision2Seq",
+                arch,
+            )
+            model_cls = auto_vision2seq_cls
+        elif auto_model_cls is not None:
+            logger.warning(
+                "Transformers does not expose %s; falling back to AutoModel",
+                arch,
+            )
+            model_cls = auto_model_cls
     elif model_cls is None:
-        logger.warning(
-            "Unknown vision-language architecture %s; falling back to AutoModelForVision2Seq",
-            arch,
-        )
-        model_cls = AutoModelForVision2Seq
+        if auto_vision2seq_cls is not None:
+            logger.warning(
+                "Unknown vision-language architecture %s; falling back to AutoModelForVision2Seq",
+                arch,
+            )
+            model_cls = auto_vision2seq_cls
+        elif auto_model_cls is not None:
+            logger.warning(
+                "Unknown vision-language architecture %s; falling back to AutoModel",
+                arch,
+            )
+            model_cls = auto_model_cls
 
-    if model_cls is AutoModelForImageTextToText:
+    if model_cls is None:
+        raise ImportError(
+            "No compatible model loader found in transformers. "
+            "Upgrade transformers to a version that supports this VLM architecture, e.g. 4.57.6."
+        )
+
+    if auto_image_text_cls is not None and model_cls is auto_image_text_cls:
         logger.info("Using AutoModelForImageTextToText fallback for %s", arch)
+    elif auto_vision2seq_cls is not None and model_cls is auto_vision2seq_cls:
+        logger.info("Using AutoModelForVision2Seq fallback for %s", arch)
+    elif auto_model_cls is not None and model_cls is auto_model_cls:
+        logger.info("Using AutoModel fallback for %s", arch)
     else:
         logger.info("Using resolved model class %s", getattr(model_cls, "__name__", str(model_cls)))
 
